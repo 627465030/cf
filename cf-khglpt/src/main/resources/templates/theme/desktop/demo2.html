@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这里是一个测试的左右排布,右侧是iframe的元素</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="./component/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/login_1.css">
+    <script src="layui/layui.js"></script>
+</head>
+<body style="background: #ddd;">
+    <div class="layui-row">
+        <div class="layui-col-xs2 left_sample_content">
+
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">网站设置</li>
+                    <li>用户管理</li>
+                    <li>权限分配</li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="layui-col-xs10 right_sample_content">
+            <div class="resizor"><span class="fa fa-angle-left" id="resizor_id"></span></div>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" style="background:#2D93CA;">内容1</div>
+                <div class="layui-tab-item" style="background:#256d95;">内容2</div>
+                <div class="layui-tab-item" style="background:#eb7350;">内容3</div>
+            </div>
+        </div>
+    </div>
+<script src="js/jquery-2.2.4.min.js"></script>
+    <script>
+        layui.use('element', function(){
+            var element = layui.element;
+            element.tab({
+                headerElem: 'ul.layui-tab-title>li' //指定tab头元素项
+                ,bodyElem: 'div.layui-tab-content>.layui-tab-item' //指定tab主体元素项
+            });
+        });
+    </script>
+<script>
+    var container = $('.layui-row');
+    // 根据当前窗口大小设定 container 的高度
+    container.css({'height': ($(window).height()), 'opacity': 1});
+    var mem_right_width=$('.right_sample_content').css('width');
+    $('#resizor_id').bind('click',function () {
+        var mem_right_width=$('.right_sample_content').css('width');
+        if($('#resizor_id').hasClass('fa-angle-left')){
+            //$('.left_sample_content').css('display','none');
+            $('.left_sample_content').hide('normal',function(){
+                 $('.right_sample_content').addClass('w100')
+
+            });
+            $('#resizor_id').removeClass('fa-angle-left');
+            $('#resizor_id').addClass('fa-angle-right');
+            $('#resizor_id').css('text-indent',0);
+            $('div.resizor').css('margin-left',0);
+        }
+        else{
+            $('.left_sample_content').show('normal',function(){
+                 $('.right_sample_content').removeClass('w100')
+
+            });
+            //$('.left_sample_content').css('display','block');
+            //$('.left_sample_content').show(500);
+            $('#resizor_id').removeClass('fa-angle-right');
+            $('#resizor_id').addClass('fa-angle-left');
+            $('.right_sample_content').removeClass('w100');
+            $('#resizor_id').css('text-indent','-5px');
+            $('div.resizor').css('margin-left','-15px');
+        }
+    });
+    $(window).resize(function(){
+        container.css({'height': ($(window).height()), 'opacity': 1});
+        $('.resizor').css('top','50%');
+    });
+</script>
+</body>
+</html>

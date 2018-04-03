@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/desktop_head :: deskTopHead">
+<html>
+<body>
+<div id="win10">
+    <div class="desktop">
+        <div class="zy_menuNav" id="win10_toggle_left_nav">
+            <span class="fa fa-angle-left" ></span>
+        </div>
+        <div id="win10-shortcuts" class="shortcuts-hidden">
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo1','<img class=\'icon\' src=\'./img/icon/icon-1.png\'/>重点人员')">
+                <img class="icon" src="./img/icon/icon-1.png"/>
+                <div class="title">面板拖拽</div>
+            </div>
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo2','<img class=\'icon\' src=\'./img/icon/icon-2.png\'/>重点群体')">
+                <img class="icon" src="./img/icon/icon-2.png"/>
+                <div class="title">面板收缩</div>
+            </div>
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo1','<img class=\'icon\' src=\'./img/icon/icon-3.png\'/>重点组织')">
+                <img class="icon" src="./img/icon/icon-3.png"/>
+                <div class="title">重点组织</div>
+            </div>
+            <div class="shortcut" onclick="window.openUrl('/toDemo1')">
+                <img class="icon" src="./img/icon/icon-4.png"/>
+                <div class="title">重点矛盾</div>
+            </div>
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo1','<img class=\'icon\' src=\'./img/icon/icon-5.png\'/>重点阵地')">
+                <img class="icon" src="./img/icon/icon-5.png"/>
+                <div class="title">重点阵地</div>
+            </div>
+            <div class="shortcut" onclick="window.openUrl('/toDemo1')">
+                <img class="icon" src="./img/icon/icon-6.png"/>
+                <div class="title">重点单位</div>
+            </div>
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo1','<img class=\'icon\' src=\'./img/icon/icon-7.png\'/>信息上报')">
+                <img class="icon" src="./img/icon/icon-7.png"/>
+                <div class="title">信息上报</div>
+            </div>
+            <div class="shortcut win10-open-window" data-url="/toDemo1">
+                <img class="icon" src="./img/icon/icon-8.png"/>
+                <div class="title">预警指令</div>
+            </div>
+
+            <div class="shortcut" onclick="Win10.openUrl('/toDemo1','<img class=\'icon\' src=\'./img/icon/icon-7.png\'/>专题研判')">
+                <img class="icon" src="./img/icon/icon-9.png"/>
+                <div class="title">专题研判</div>
+            </div>
+        </div>
+        <div id="win10-desktop-scene">
+            <div class="layui-container" >
+                <div class="layui-row mt20 layui-col-space10 zy_top_area">
+                    <div class="layui-col-md4">
+                        <div class="zy_top_logo_title">
+                            <img src="img/dsj_logo.png">
+                        </div>
+                    </div>
+                    <div class="layui-col-md5 nav_noPadding">
+                        <div class="layui-tab layui-tab-card">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this">网站设置</li>
+                                <li>用户管理</li>
+                                <li>权限分配</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="zy_top_tool">
+                            <i id="desktopLoginOut" class="icon_exit"></i>
+                            <span id="sysUserLoginAlias"></span>
+                            <i id="detSysUser" class="icon_person"></i>
+                         </div>
+                    </div>
+
+            </div>
+            </div>
+            <div class="layui-container">
+                <div class="layui-tab-content mt20">
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-md3">
+                                <div class="one_common_div">
+                                    <p class="title">情报信息情况</p>
+                                    <span class="vice_title">情报信息</span>
+                                    <div id="qbxx"></div>
+                                    <span class="vice_title">情报来源</span>
+                                    <div id="qbly"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md6">
+                                <div class="one_common_div">
+                                    <p class="title">中间信息情况</p>
+                                    <div id="zhongjian"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md3">
+                                <div class="one_common_div">
+                                    <p class="title">右侧信息情况</p>
+                                    <span class="vice_title">情报信息</span>
+                                    <div style="padding:0 16px">
+                                    <table class="layui-hide" id="test_table"></table>
+                                    </div>
+                                    <span class="vice_title">情报来源</span>
+                                    <div id="qbly1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-row">
+                            <div class="layui-col-md3">
+                                你的内容 2/12
+                            </div>
+                            <div class="layui-col-md6">
+                                你的内容 2/12
+                            </div>
+                            <div class="layui-col-md3">
+                                你的内容 2/12
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-row ">
+                            <div class="layui-col-md3">
+                                你的内容 3/12
+                            </div>
+                            <div class="layui-col-md6">
+                                你的内容 3/12
+                            </div>
+                            <div class="layui-col-md3">
+                                你的内容 3/12
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="win10-menu" class="hidden">
+        <div class="list win10-menu-hidden animated animated-slideOutLeft">
+            <div class="item"><i class="red icon fa fa-wrench fa-fw"></i><span>一级菜单1</span></div>
+            <div class="sub-item" onclick="Win10.openUrl('','子页')">二级菜单1</div>
+            <div class="sub-item" onclick="Win10.commandCenterOpen()">打开消息中心</div>
+            <div class="sub-item" onclick="Win10.newMsg('点击我试试',function() {alert('click')})">发送带回调的消息</div>
+            <div class="sub-item" onclick="Win10.menuClose()">关闭菜单</div>
+            <div class="item" ><i class="blue icon fa fa-gavel fa-fw"></i>一级菜单2</div>
+            <div class="sub-item" onclick="Win10.openUrl('','')">二级菜单1</div>
+            <div class="sub-item" onclick="Win10.openUrl('','')">二级菜单2</div>
+            <div class="sub-item" onclick="Win10.openUrl('','')">二级菜单3</div>
+        </div>
+        <div id="win10-menu-switcher"></div>
+    </div>
+    <div id="win10_command_center" class="hidden_right">
+        <div class="title">
+            <h4 style="float: left">消息中心 </h4>
+            <span id="win10_btn_command_center_clean_all">全部清除</span>
+        </div>
+        <div class="msgs"></div>
+    </div>
+    <div id="win10_task_bar">
+        <div id="win10_btn_group_left" class="btn_group">
+            <div id="win10_btn_win" class="btn"></div>
+        </div>
+        <div id="win10_btn_group_middle" class="btn_group"></div>
+        <div id="win10_btn_group_right" class="btn_group">
+            <div class="btn" id="win10_btn_time">
+            </div>
+            <div class="btn" id="win10_btn_command"><span id="win10-msg-nof" class="fa fa-comment-o"></span></div>
+            <div class="btn" id="win10_btn_show_desktop"></div>
+        </div>
+    </div>
+</div>
+<script src="js/echarts.js"></script>
+<script src="js/china.js"></script>
+<script src="layui/layui.js"></script>
+<script>
+    $(function () {
+
+        //用户名称
+        $('#sysUserLoginAlias').html(_userInfo.userName);
+
+        $('#detSysUser').click(function () {
+            Win10.openUrl('/sysUser/toSysUserListDet?id='+_userInfo.userId,'用户详情',[['1024px','600px']])
+        });
+
+        $("#desktopLoginOut").bind("click", function(){
+           $.ajax({
+                url: "/"
+                , success: function (res) {}
+            });
+        });
+
+    });
+</script>
+<script>
+    layui.config({
+        base:'js/'
+    }).use('add');
+
+    setTimeout(function () {
+        Win10.newMsg('这里是信息标题', '这里是信息详情：<a target="_blank" href="https://baidu.com/">[点击进入]</a>')
+    }, 2500);
+</script>
+</body>
+</html>

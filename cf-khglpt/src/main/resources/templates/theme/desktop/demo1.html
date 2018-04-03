@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这里是一个测试的左右排布,右侧是iframe的元素</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/content.css">
+</head>
+<body>
+<div id="container" class="resizable">
+    <!-- Left side -->
+    <div id="left">
+        <p>左侧内容</p>
+        <p>台北搜救总队负责人表示，云翠大楼“漂亮生活”旅店203房间疑似5名大陆游客受困，其中4名大人、1名小孩。目前搜救工作正在展开，但还未探测到生命迹象。
+        </p>
+    </div>
+    <div id="resizor" title="拖动条"></div>
+    <!-- Right side -->
+    <div id="right">
+        <p>右侧内容</p>
+        <p>为缓解春节期间的“快递荒”，有电商平台招募了在沪留学生来送快递。来自东华大学的留学生白通换上了快递工作服骑行出门送货，而像他这样的洋快递，苏宁易购今年共有近80位。虽然这些外籍快递人员上岗前都会接受业务技能等培训考核，但对于他们而言，最大的难题仍然是找路难和问路难，多数情况下依赖GPS的定位。</p>
+    </div>
+</div>
+<script src="js/jquery-2.2.4.min.js"></script>
+<script>
+    var isResizing = false;
+    var lastDownX = 0;
+    $(window).resize(function(){
+        set_common();
+    });
+    function set_common(){
+        var container = $('#container.resizable');
+        // 根据当前窗口大小设定 container 的高度
+        container.css({'height': ($(window).height()), 'opacity': 1});
+
+        var left = $('#left');
+        var right = $('#right');
+        var resizor = $('#resizor');
+
+        resizor.on('mousedown', function (e) {
+            isResizing = true;
+            lastDownX = e.clientX;
+            e.preventDefault();
+        });
+        //resizor.on('click', function (e) {
+        //isResizing = false;
+        //   $("#left").toggle();
+        //   $("#right").css('width','100%');
+        //   $('#resizor').css('right','50');
+        //  e.preventDefault();
+
+        //});
+
+        $(document).on('mousemove', function (e) {
+            if (!isResizing) return true;
+            var offsetRight = container.width() - (e.clientX - container.offset().left);
+            var y=e.clientX - container.offset().left-4;
+            var z=left.width();
+            //console.log(y);
+            // 判断左右拖动范围
+            if (offsetRight < 0 || offsetRight >= container.width() ) {
+                if(offsetRight<0){
+                    isResizing = false;
+                    return true;
+                }
+                else{
+                    left.css('right', offsetRight);
+                    //alert('yes');
+                    isResizing = false;
+                    console.log(container.width()-6);
+                    resizor.css('right', container.width()-6);
+                    return true;
+                }
+            }
+            left.css('right', offsetRight);
+            //left.css('width', y);
+            //console.log(offsetRight);
+            //console.log(container.width());
+            resizor.css('right', offsetRight);
+            right.css('width', offsetRight);
+        }).on('mouseup', function (e) {
+            isResizing = false;//禁止移动
+        });
+    }
+    set_common();
+</script>
+</body>
+</html>

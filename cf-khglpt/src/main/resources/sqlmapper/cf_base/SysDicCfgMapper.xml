@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysDicCfgMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysDicCfg">
+    <result column="DIC_NO" jdbcType="VARCHAR" property="dicNo" />
+    <result column="DIC_ID" jdbcType="VARCHAR" property="dicId" />
+    <result column="DIC_ID_NAME" jdbcType="VARCHAR" property="dicIdName" />
+    <result column="DIC_PID" jdbcType="VARCHAR" property="dicPid" />
+    <result column="DIC_SPELL" jdbcType="VARCHAR" property="dicSpell" />
+    <result column="DIC_NO_NAME" jdbcType="VARCHAR" property="dicNoName" />
+    <result column="SORT_ID" jdbcType="VARCHAR" property="sortId" />
+    <result column="OWN_DESC" jdbcType="VARCHAR" property="ownDesc" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="CREATAE_DEPT" jdbcType="VARCHAR" property="creataeDept" />
+    <result column="UPDATE_DEPT" jdbcType="VARCHAR" property="updateDept" />
+    <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+    <result column="YN_ENABLE" jdbcType="VARCHAR" property="ynEnable" />
+    <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+
+    <!--获取所有字典信息-->
+  <select id="selectSysDicCfgList" parameterType="com.cf.core.base.mybatis.cf_base.SysDicCfg" resultMap="BaseResultMap">
+      select * from CF_BASE.SYS_DIC_CFG where YN_ENABLE=1 and DEL_FLAG=0 order by DIC_NO,SORT_ID
+  </select>
+
+  <insert id="insert" parameterType="com.cf.core.base.mybatis.cf_base.SysDicCfg">
+    insert into CF_BASE.SYS_DIC_CFG (DIC_NO, DIC_ID, DIC_ID_NAME, 
+      DIC_PID, DIC_SPELL, DIC_NO_NAME, 
+      SORT_ID, OWN_DESC, CREATE_USER, 
+      CREATE_TIME, UPDATE_USER, UPDATE_TIME, 
+      CREATAE_DEPT, UPDATE_DEPT, DEL_FLAG, 
+      YN_ENABLE, GROUP_ID, MEMO
+      )
+    values (#{dicNo,jdbcType=VARCHAR}, #{dicId,jdbcType=VARCHAR}, #{dicIdName,jdbcType=VARCHAR}, 
+      #{dicPid,jdbcType=VARCHAR}, #{dicSpell,jdbcType=VARCHAR}, #{dicNoName,jdbcType=VARCHAR}, 
+      #{sortId,jdbcType=VARCHAR}, #{ownDesc,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
+      #{creataeDept,jdbcType=VARCHAR}, #{updateDept,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{ynEnable,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysDicCfg">
+    insert into CF_BASE.SYS_DIC_CFG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicNo != null">
+        DIC_NO,
+      </if>
+      <if test="dicId != null">
+        DIC_ID,
+      </if>
+      <if test="dicIdName != null">
+        DIC_ID_NAME,
+      </if>
+      <if test="dicPid != null">
+        DIC_PID,
+      </if>
+      <if test="dicSpell != null">
+        DIC_SPELL,
+      </if>
+      <if test="dicNoName != null">
+        DIC_NO_NAME,
+      </if>
+      <if test="sortId != null">
+        SORT_ID,
+      </if>
+      <if test="ownDesc != null">
+        OWN_DESC,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="creataeDept != null">
+        CREATAE_DEPT,
+      </if>
+      <if test="updateDept != null">
+        UPDATE_DEPT,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE,
+      </if>
+      <if test="groupId != null">
+        GROUP_ID,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicNo != null">
+        #{dicNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dicId != null">
+        #{dicId,jdbcType=VARCHAR},
+      </if>
+      <if test="dicIdName != null">
+        #{dicIdName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicPid != null">
+        #{dicPid,jdbcType=VARCHAR},
+      </if>
+      <if test="dicSpell != null">
+        #{dicSpell,jdbcType=VARCHAR},
+      </if>
+      <if test="dicNoName != null">
+        #{dicNoName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null">
+        #{sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownDesc != null">
+        #{ownDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creataeDept != null">
+        #{creataeDept,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDept != null">
+        #{updateDept,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

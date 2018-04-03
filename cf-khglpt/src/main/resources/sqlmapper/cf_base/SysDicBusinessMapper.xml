@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysDicBusinessMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysDicBusiness">
+    <result column="DICNO" jdbcType="VARCHAR" property="dicno" />
+    <result column="DICNAME" jdbcType="VARCHAR" property="dicname" />
+    <result column="DICCODE" jdbcType="VARCHAR" property="diccode" />
+    <result column="DICITEM" jdbcType="VARCHAR" property="dicitem" />
+    <result column="PID" jdbcType="VARCHAR" property="pid" />
+    <result column="DICSPY" jdbcType="VARCHAR" property="dicspy" />
+    <result column="ORDERID" jdbcType="DECIMAL" property="orderid" />
+    <result column="ISVALID" jdbcType="DECIMAL" property="isvalid" />
+    <result column="ISMODIFY" jdbcType="DECIMAL" property="ismodify" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+    <result column="CREATEUSER" jdbcType="VARCHAR" property="createuser" />
+    <result column="CREATETIME" jdbcType="VARCHAR" property="createtime" />
+    <result column="MODIFYUSER" jdbcType="VARCHAR" property="modifyuser" />
+    <result column="MODIFYTIME" jdbcType="VARCHAR" property="modifytime" />
+    <result column="CREATEORG" jdbcType="VARCHAR" property="createorg" />
+    <result column="MODIFYORG" jdbcType="VARCHAR" property="modifyorg" />
+    <result column="OLDCODE" jdbcType="VARCHAR" property="oldcode" />
+    <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+    <result column="YN_ENABLE" jdbcType="VARCHAR" property="ynEnable" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+  </resultMap>
+  <!--获取所有公安业务字典信息-->
+    <select id="selectSysDicBusinessList" parameterType="com.cf.core.base.mybatis.cf_base.SysDicBusiness" resultMap="BaseResultMap">
+      SELECT * FROM CF_BASE.SYS_DIC_BUSINESS WHERE DEL_FLAG='0' and YN_ENABLE='1'
+    </select>
+  <!--获取监管单位列表-->
+  <select id="selectSysDicBusinessOrgList" parameterType="com.cf.core.base.mybatis.cf_base.SysDicBusiness" resultMap="BaseResultMap">
+    SELECT DICCODE,DICITEM,PID FROM CF_BASE.SYS_DIC_BUSINESS WHERE DEL_FLAG='0' and YN_ENABLE='1' and DICNO='2' and DICCODE like '${diccode}%'
+  </select>
+
+    <!--获取公安业务字典信息 管理功能-->
+    <select id="selectSysDicBusinessManagerList" parameterType="com.cf.core.base.mybatis.cf_base.SysDicBusiness" resultMap="BaseResultMap">
+      SELECT * FROM CF_BASE.SYS_DIC_BUSINESS
+      WHERE DEL_FLAG='0' and YN_ENABLE='1' and PID like '${pid}%'
+        <if test="diccode != null and diccode!=''">
+            and DICCODE like '%${diccode}%'
+        </if>
+        <if test="dicitem != null and dicitem!=''">
+            and DICITEM like '%${dicitem}%'
+        </if>
+    </select>
+  <insert id="insert" parameterType="com.cf.core.base.mybatis.cf_base.SysDicBusiness">
+    insert into CF_BASE.SYS_DIC_BUSINESS (DICNO, DICNAME, DICCODE, 
+      DICITEM, PID, DICSPY, 
+      ORDERID, ISVALID, ISMODIFY, 
+      MEMO, CREATEUSER, CREATETIME, 
+      MODIFYUSER, MODIFYTIME, CREATEORG, 
+      MODIFYORG, OLDCODE, DEL_FLAG, 
+      YN_ENABLE, ORG_ID)
+    values (#{dicno,jdbcType=VARCHAR}, #{dicname,jdbcType=VARCHAR}, #{diccode,jdbcType=VARCHAR}, 
+      #{dicitem,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{dicspy,jdbcType=VARCHAR}, 
+      #{orderid,jdbcType=DECIMAL}, #{isvalid,jdbcType=DECIMAL}, #{ismodify,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{modifyuser,jdbcType=VARCHAR}, #{modifytime,jdbcType=VARCHAR}, #{createorg,jdbcType=VARCHAR}, 
+      #{modifyorg,jdbcType=VARCHAR}, #{oldcode,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{ynEnable,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysDicBusiness">
+    insert into CF_BASE.SYS_DIC_BUSINESS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicno != null">
+        DICNO,
+      </if>
+      <if test="dicname != null">
+        DICNAME,
+      </if>
+      <if test="diccode != null">
+        DICCODE,
+      </if>
+      <if test="dicitem != null">
+        DICITEM,
+      </if>
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="dicspy != null">
+        DICSPY,
+      </if>
+      <if test="orderid != null">
+        ORDERID,
+      </if>
+      <if test="isvalid != null">
+        ISVALID,
+      </if>
+      <if test="ismodify != null">
+        ISMODIFY,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+      <if test="createuser != null">
+        CREATEUSER,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="modifyuser != null">
+        MODIFYUSER,
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME,
+      </if>
+      <if test="createorg != null">
+        CREATEORG,
+      </if>
+      <if test="modifyorg != null">
+        MODIFYORG,
+      </if>
+      <if test="oldcode != null">
+        OLDCODE,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicno != null">
+        #{dicno,jdbcType=VARCHAR},
+      </if>
+      <if test="dicname != null">
+        #{dicname,jdbcType=VARCHAR},
+      </if>
+      <if test="diccode != null">
+        #{diccode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicitem != null">
+        #{dicitem,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="dicspy != null">
+        #{dicspy,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null">
+        #{orderid,jdbcType=DECIMAL},
+      </if>
+      <if test="isvalid != null">
+        #{isvalid,jdbcType=DECIMAL},
+      </if>
+      <if test="ismodify != null">
+        #{ismodify,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuser != null">
+        #{modifyuser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="createorg != null">
+        #{createorg,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyorg != null">
+        #{modifyorg,jdbcType=VARCHAR},
+      </if>
+      <if test="oldcode != null">
+        #{oldcode,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

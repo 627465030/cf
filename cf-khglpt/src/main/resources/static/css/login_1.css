@@ -1,0 +1,14 @@
+/*.layui-col-xs3{height:100%;}*/
+/*.layui-col-xs9{height:100%;}*/
+/*.layui-col-xs*{height:100%;}*/
+/*.layui-col-md*{height:100%;}*/
+.left_sample_content{background: #ddd;height:100%;}
+.right_sample_content{background: #eaeaea;height:100%;}
+.resizor{position: absolute;left:0;width:30px;background: #999;top:49%;height:30px;margin-top: -15px;margin-left: -15px;
+    text-align: center;z-index:999;border-radius: 50%;}
+.resizor span{display: inline-block;width:30px;height:30px;font-size:30px;color:#fff;text-indent: -5px;}
+.w100{width:100%;}
+.resizor:hover{background:#666;cursor:pointer;}
+
+div.layui-tab-content{height:100%;padding:0;}
+div.layui-tab-content .layui-tab-item{height:100%;}

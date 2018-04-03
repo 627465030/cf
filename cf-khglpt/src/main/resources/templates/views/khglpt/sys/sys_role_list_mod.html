@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+<div class="layui-fluid cf-main">
+    <form id="addSysUserForm" class="layui-form" action="" >
+        <div class="layui-form-item">
+            <div class="layui-btn-group">
+                <button class="layui-btn" lay-submit lay-filter="saveSysRole">保存</button>
+                <button type="reset" class="layui-btn" >重置</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+            <label class="layui-form-label"><span class="cf-Required-item">*</span>角色名称</label>
+            <div class="layui-input-inline">
+                <input name="name" lay-verify="required" class="layui-input" type="text" th:value="${role.name}"/>
+                <input name="id" class="layui-input" type="text" style="display: none;" th:value="${role.id}"/>
+            </div>
+        </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="cf-Required-item">*</span>是否启用</label>
+            <div class="layui-input-inline">
+                <span th:each="item,iterStat : ${session.mode.sysDicCfgMap['1']}">
+                    <input name="ynEnable" th:value="${item.key}" th:title="${item.value}" th:if="${item.key==role.ynEnable}" checked="" type="radio"/>
+                    <input name="ynEnable" th:value="${item.key}" th:title="${item.value}" th:if="${item.key!=role.ynEnable}" type="radio"/>
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="memo" class="layui-textarea" th:text="${role.memo}"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['form','layer'], function(){
+        var $ = layui.$
+            ,view = layui.view
+            ,form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,laytpl = layui.laytpl;
+
+        form.render();
+
+        //表单提交
+        form.on('submit(saveSysRole)', function(data){
+            $.cf.req({
+                url:'/sysRole/modSysRole'
+                ,data: data.field
+                ,success:function(res){
+                    if('0'==res.code){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layer.msg(res.msg,{icon: 6});
+                    }else{
+                        layer.msg(res.msg,{icon: 5});
+                    }
+                }
+            });
+
+            return false;
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

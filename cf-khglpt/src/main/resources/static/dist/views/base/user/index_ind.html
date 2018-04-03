@@ -1,0 +1,175 @@
+<title>用户管理</title>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-row layui-col-space10 layui-form-item">
+                <div class="layui-btn-group">
+                    <button id="sysUserDet" class="layui-btn ">浏览</button>
+                    <button id="sysUserAdd" class="layui-btn ">新增</button>
+                    <button id="sysUserMod" class="layui-btn ">修改</button>
+                    <button id="sysUserDel" class="layui-btn ">删除</button>
+                </div>
+            </div>
+            <form id="searchSysUserForm" class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">登录名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="loginName" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="loginAlias" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否启用</label>
+                        <div class="layui-input-inline">
+                            <select name="ynEnable" lay-verify="">
+                                <option value="">全部</option>
+                                <option value="010">是</option>
+                                <option value="021">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所在单位</label>
+                        <div class="layui-input-inline">
+                            <input id="sysUserChoiceOrg" type="text" placeholder="选择单位" class="layui-input cf-cursor-pointer"/>
+                            <input id="sysUserChoiceOrgId" name="orgId" type="hidden"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-radius layui-btn-sm" lay-submit lay-filter="sysUserSearch"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+                </div>
+            </form>
+            <table class="layui-hide" id="sysUserList" lay-filter="sysUserListTable"></table>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="sysUserListBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">设置角色</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">密码重置</a>
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">密码重置</a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"></a>-->
+</script>
+<script>
+
+    layui.use(['admin','table','form','layer'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,layer = layui.layer
+            ,form = layui.form
+            ,router = layui.router()
+            ,table = layui.table;
+
+        form.on('submit(sysUserSearch)', function(data){
+           table.reload('sysUserList', {
+               where:data.field
+           });
+            return false;
+        });
+        $('#sysUserAdd').click(function () {
+            layer.open({
+                id:'sysUserAddWin',
+                title:'新建用户',
+                type:1,
+                maxmin: true,
+                area: ['1000px', '600px'],
+                success:function(layero,index){
+                    layui.view(this.id).render('base/user/sys_user_add');
+                }
+            });
+        });
+
+        $('#sysUserDet').click(function () {
+
+        });
+
+        $('#sysUserChoiceOrg').click(function () {
+            layer.open({
+                id:'sysUserChoiceOrgWin',
+                title:'选择单位',
+                content:basePath + '/common/toChoiceOrg',
+                type:2,
+                maxmin: true,
+                area: ['350px', '300px'],
+                btn: ['选择', '清空','关闭'],
+                btnAlign:'c',
+                btn1: function(index, layero){
+                    var body = layer.getChildFrame('body', index);
+                    var id = body.find('#id').val();
+                    var name = body.find('#name').val();
+                    if(!id && !name){
+                        layer.msg("选择单位");
+                        return false;
+                    }
+                    $("#sysUserChoiceOrgId").val(id);
+                    $("#sysUserChoiceOrg").val(name);
+                    layer.close(index);
+
+                },
+                btn2: function(index, layero){
+                    $("#sysUserChoiceOrgId").val('');
+                    $("#sysUserChoiceOrg").val('');
+                },
+                btn3: function(index, layero){
+
+                },
+                success:function(layero,index){
+
+                }
+            });
+        });
+
+        table.render({
+            elem: '#sysUserList'
+            ,url:'/sysUser/searchSysUserList'
+            ,page:true
+            ,method: 'post'
+            ,where:$('#searchSysUserForm').serializeArray()
+            //,limit:1
+            ,cols: [[
+                //{type:'numbers'}
+                {type: 'checkbox'}
+                ,{field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'loginName', width:120, title: '登录名称', sort: true}
+                ,{field:'loginAlias', width:150, title: '真实姓名', sort: true}
+                ,{field:'sex', width:120, title: '性别', sort: true}
+                ,{field:'isLock', width:200, title: '所在单位'}
+                ,{field:'ynEnable', width:120,title: '是否启用', sort: true }
+                ,{field:'experience', minWidth: 150, title: '操作', toolbar: '#sysUserListBar'}
+            ]]
+
+        });
+
+        table.on('tool(sysUserListTable)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if(layEvent === 'edit'){
+                layer.msg('编辑操作');
+            }
+        });
+
+        $.cf.controlButton({
+            arrayId:['sysUserDet','sysUserAdd','sysUserDel','sysUserMod'],
+            method:_button_method
+           // method:'remove'
+        });
+
+        form.render();
+    });
+</script>

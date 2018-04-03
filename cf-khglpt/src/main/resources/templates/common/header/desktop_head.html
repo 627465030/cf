@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head th:fragment="deskTopHead">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <title th:text="${session.mode.appTitleName}"></title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel='Shortcut Icon' type='image/x-icon' href='./img/icon_icon1.png'>
+    <script type="text/javascript" src="./js/jquery-2.2.4.min.js"></script>
+    <link href="./css/animate.css" rel="stylesheet">
+    <script type="text/javascript" src="./component/layer-v3.0.3/layer/layer.js"></script>
+    <link rel="stylesheet" href="./component/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="./css/default.css" rel="stylesheet">
+    <script type="text/javascript" src="./js/win10.js"></script>
+
+    <!--ZTREE-->
+    <link rel="stylesheet" th:href="@{/common/js/ztree/css/ztreeStyle.css}"/>
+    <!--<script th:src="@{/common/js/ztree/jquery-1.4.4.min.js}" type="text/javascript"></script>-->
+    <script th:src="@{/common/js/ztree/jquery.ztree.all.min.js}" type="text/javascript"></script>
+
+    <!--平台-->
+    <link rel="stylesheet" th:href="@{/common/css/cf-common.css}" media="all">
+    <script th:src="@{/common/js/util/cf-cfg.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        _basePath = [[${CF_BASE_PATH}]];
+        _userInfo.userId=[[${session.mode.sysUser.id}]];
+        _userInfo.userName=[[${session.mode.sysUser.loginAlias}]];
+        _userInfo.orgName=[[${session.mode.userOrgName}]];
+        _userInfo.regulatoryOrg=[[${session.mode.userRegulatoryOrgName}]];
+        _cacheInfo.sysDicCfg=[[${session.mode.sysDicCfgMap}]];
+        _cacheInfo.sysDicBusiness=[[${session.mode.sysDicBusinessMap}]];
+        _appTitleName = [[${session.mode.appTitleName}]];
+        //alert(_basePath);
+        /*]]>*/
+    </script>
+    <script th:src="@{/common/js/util/cf-common-iframe.js}" type="text/javascript" charset="utf-8"></script>
+    <!--<link rel="stylesheet" href="common/js/ztree/css/ztreeStyle.css"/>
+    <script src="common/js/ztree/jquery-1.4.4.min.js" type="text/javascript"/>
+    <script src="common/js/ztree/jquery.ztree.all.min.js" type="text/javascript"/>-->
+    <!--报表使用 dark 黑色 vintage 复古-->
+    <!--<script src="common/js/echars/echarts.min.js" type="text/javascript"/>
+    <script src="common/js/echars/dark.js" type="text/javascript"/>-->
+    <!--<script src="common/js/echars/vintage.js" type="text/javascript"/>-->
+    <!--layui extend-->
+    <script type="text/javascript">
+        /*layui.config({
+            base: '../dist/lib/extend/'
+        }).extend({
+            cfCustomTree:'cfCustomTree',
+            cfTreeSelect: 'cfTreeSelect',
+            treeTablePopup: 'cfTreeTablePopup',
+            dropdown:'cfDropdown'
+        });*/
+    </script>
+
+    <style>
+        * {
+            font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu
+        }
+        /*磁贴自定义样式*/
+        .win10-block-content-text {
+            line-height: 44px;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        Win10.onReady(function () {
+
+            //设置壁纸
+            Win10.setBgUrl({
+                main:'./img/wallpapers/bg-1.jpg',
+                mobile:'./img/wallpapers/mobile.jpg',
+            });
+
+            Win10.setAnimated([
+                'animated flip',
+                'animated bounceIn',
+            ], 0.01);
+
+        });
+    </script>
+
+</head>
+</html>

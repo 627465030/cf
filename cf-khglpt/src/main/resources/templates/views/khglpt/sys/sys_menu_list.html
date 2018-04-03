@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+<div class="layui-fluid cf-main">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">功能</div>
+                <div class="layui-card-body layui-row">
+                    <div class="layui-btn-group">
+                        <button id="addSysMenuTreeNode" class="layui-btn "><i class="layui-icon"></i>新建菜单</button>
+                        <button id="buildSysMenuTreePath" class="layui-btn ">生成菜单</button>
+                        <button id="refreshSysMenuTree" class="layui-btn "><i class="layui-icon">&#x1002;</i></button>
+                    </div>
+                    <ul id="sysMenuTree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header">功能详情|<span style="color: red;">提示：选择菜单节点编辑详情，记得改菜单名<i class="layui-icon">&#xe6af;</i></span></div>
+                <div class="layui-card-body">
+                    <script id="addSysMenuFormTpl" type="text/html">
+                        <form class="layui-form" action="">
+                            <div class="layui-row layui-col-space10 layui-form-item">
+                                <div class="layui-btn-group">
+                                    <button id="modSysMenu" class="layui-btn layui-btn-disabled" lay-submit lay-filter="modSysMenu" disabled="disabled">修改</button>
+                                    <button id="saveSysMenu" class="layui-btn layui-btn-disabled" lay-submit lay-filter="saveSysMenu" disabled="disabled">保存</button>
+                                    <button id="resetSysMenu" type="reset" class="layui-btn layui-btn-disabled" disabled="disabled">重置</button>
+                                </div>
+                            </div>
+
+                            <div class="layui-row layui-col-space10 layui-form-item">
+                                <!--<div class="layui-col-lg5">
+                                    <label class="layui-form-label"><span class="cf-Required-item">*</span>菜单名称：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="menuName" lay-verify="required" readonly placeholder="" autocomplete="off" class="layui-input" value="{{ d.title }}"/>
+                                        <span class="cf-example-explain">说明：只读属性，根据左侧树变化</span>
+                                    </div>
+                                </div>-->
+                                <div class="layui-col-lg5">
+                                    <label class="layui-form-label">访问地址：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="menuUrl" placeholder="" autocomplete="off" class="layui-input" value="{{d.menuUrl||''}}">
+                                        <span class="cf-example-explain">例：/sysUser/toSysUserList</span>
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg5">
+                                    <label class="layui-form-label">选择图标：</label>
+                                    <div class="layui-input-block">
+                                        <input id="sysMenuChoiceIcon" type="text" class="layui-input cf-cursor-pointer" value="{{d.icon||''}}"/>
+                                        <input type="hidden" id="sysMenuChoiceIconId" name="icon"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-col-space10 layui-form-item">
+                                <div class="layui-col-lg5">
+                                    <label class="layui-form-label">菜单类型：</label>
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="menuType" value="1" title="普通菜单" checked>
+                                        <input type="radio" name="menuType" value="2" title="功能按钮" >
+                                       <!-- <input type="radio" name="menuType" value="3" title="外部链接">-->
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg5">
+                                    <label class="layui-form-label">功能ID：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="menuFun" placeholder="" autocomplete="off" class="layui-input">
+                                        <span class="cf-example-explain">例：addSysMenu 全局唯一名称</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="layui-form-item">
+                                <label class="layui-form-label">菜单层级：</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="menuLev" value="1" title="一级" checked>
+                                    <input type="radio" name="menuLev" value="2" title="二级">
+                                    <input type="radio" name="menuLev" value="3" title="三级">
+                                    <input type="radio" name="menuLev" value="other" title="其他">
+                                </div>
+                            </div>-->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">开发模式：</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="devMode" value="1" title="IFRAME" checked>
+                                    <input type="radio" name="devMode" value="2" title="单页面">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">是否启用：</label>
+                                <div class="layui-input-block">
+                                    <input id="sysMenuYnenable" type="checkbox" value="1" checked name="ynEnable" lay-skin="switch" lay-text="是|否" lay-filter="switchYnenable" />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注说明：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="memo" placeholder="" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </script>
+                    <div id="addSysMenuFormView"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form','layer','laytpl'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
+
+        //加载模板
+        var getTpl = addSysMenuFormTpl.innerHTML
+            ,view = document.getElementById('addSysMenuFormView');
+
+        function initTpl(data){
+            laytpl(getTpl).render(data,function(html){
+                view.innerHTML = html;
+                form.render();
+                initSysMenuFormEvent();
+
+            });
+        }
+
+        //获取菜单详情事件
+        function getSysMenuEvent(treeNode){
+            var id = treeNode.id;
+            $.cf.req({
+                url:'/sysMenu/getSysMenuById',
+                data:{'id':id},
+                success:function(res){
+                    var data = {};
+                    if(res.data){
+                        data = res.data;
+                    }
+                    initTpl(data);
+                    if(res.data){
+                        $.cf.controlButton({
+                            arrayId:['modSysMenu','resetSysMenu'],
+                            method:'normal'
+                        });
+                        $.cf.controlButton({
+                            arrayId:['saveSysMenu'],
+                            method:_button_method
+                        });
+                    } else {
+                        $.cf.controlButton({
+                            arrayId:['saveSysMenu','resetSysMenu'],
+                            method:'normal'
+                        });
+                    }
+
+                }
+            });
+        }
+
+        //保存修改通用方法
+        function saveModSysMenuEvent(data,url) {
+            var zTree = $.fn.zTree.getZTreeObj("sysMenuTree");
+            var nodes = zTree.getSelectedNodes();
+            if(0 == nodes.length){
+                layer.msg('请选择菜单节点',{icon: 5});
+                return false;
+            }
+
+            var id = nodes[0].id;
+            var pId = nodes[0].pId;
+            var name = nodes[0].name;
+            if('新子菜单'== name || '新菜单'==name){
+                layer.msg('请修改菜单名',{icon: 5});
+                return false;
+            }
+            data.field.id=id;
+            data.field.pid=pId?pId:0;
+            data.field.menuName=name;
+            data.field.menuLev=nodes[0].level;;
+            data.field.ynEnable=data.field.ynEnable?data.field.ynEnable:0;
+            data.field.sortId=cf_tree_getTreeSort(zTree,pId,nodes[0]);
+
+            $.cf.req({
+                url:url
+                ,data: data.field
+                ,success:function(res){
+                    //zTree.reAsyncChildNodes(null, "refresh");
+                    layer.msg(res.msg,{icon: 6});
+                }
+            });
+            return false;
+        }
+
+        //顺序事件加载
+        function initSysMenuFormEvent(){
+            //选择菜单图标 通用弹出选择模板
+            $('#sysMenuChoiceIcon').bind('click',function () {
+                layer.open({
+                    id:'sysMenuChoiceIconWin',
+                    title:'选择菜单图标',
+                    content:'/sysJumpView/toSysMenuListIcon',
+                    type:2,
+                    maxmin: true,
+                    area: ['850px', '500px'],
+                    btn: ['选择', '清空','关闭'],
+                    btnAlign:'c',
+                    btn1: function(index, layero){
+                        var body = layer.getChildFrame('body', index);
+                        var id = body.find('#code').val();
+                        var name = body.find('#name').val();
+                        if(!id && !name){
+                            layer.msg("请选择图标");
+                            return false;
+                        }
+                        $("#sysMenuChoiceIconId").val(id);
+                        $("#sysMenuChoiceIcon").val(name);
+                        layer.close(index);
+                    },
+                    btn2: function(index, layero){
+                        $("#sysMenuChoiceIconId").val('');
+                        $("#sysMenuChoiceIcon").val('');
+                    },
+                    btn3: function(index, layero){
+
+                    },
+                    success:function(layero,index){
+
+                    }
+                });
+            });
+
+            //保存菜单
+            form.on('submit(saveSysMenu)', function(data){
+                return saveModSysMenuEvent(data,'/sysMenu/saveSysMenu');
+            });
+
+            //修改菜单
+            form.on('submit(modSysMenu)', function(data){
+                return saveModSysMenuEvent(data,'/sysMenu/modSysMenu');
+            });
+        }
+
+        var zTreeObj;
+        // zTree 的参数配置
+        var setting = {
+            edit: {
+                enable: true,
+                drag:{
+                    isMove:true
+                }
+            },
+            data: {
+                key: {
+                    name : 'name',
+                    title: ''
+                },
+                simpleData : {
+                    enable : true,
+                    idKey : 'id',
+                    pIdKey :'pId'
+                }
+            },
+            async:{
+                enable: true,
+                url:'/sysMenu/getSysMenuAll',
+                dataType:'json'
+            },
+            callback:{
+                onClick:function(event, treeId, treeNode){
+                    getSysMenuEvent(treeNode);
+                },
+                onRename:function (event, treeId, treeNode, isCancel) {
+                    getSysMenuEvent(treeNode);
+                },
+                onRemove:function (event, treeId, treeNode) {
+                    var str ="";
+                    str = treeNode.id + cf_tree_getAllChildrenNodes(treeNode,str);
+                    $.cf.req({
+                        url:'/sysMenu/removeSysMenu',
+                        data:{'id':str},
+                        success:function (res) {
+                            layer.msg(res.msg,{icon: 6});
+                        }
+
+                    });
+                },
+                onAsyncSuccess:function (event, treeId, treeNode, msg) {
+                    var zTree = $.fn.zTree.getZTreeObj(treeId);
+                    zTree.expandAll(true);
+                    initTpl({});
+                },
+                onDrop: function (event, treeId, treeNodes, targetNode, moveType) {
+                    var zTree = $.fn.zTree.getZTreeObj(treeId);
+                    var nodes = zTree.getNodes();
+                    for (var i = 0;i<nodes.length;i++){
+                        cf_tree_resetSortByReadMenuTree(zTree,nodes[i]);
+                    }
+                }
+            }
+        };
+
+
+        //加载菜单树
+        var zNodes = [];
+        $(document).ready(function(){
+            zTreeObj = $.fn.zTree.init($("#sysMenuTree"), setting, zNodes);
+        });
+
+        //新增菜单树
+        $('#addSysMenuTreeNode').bind("click", {isParent:false}, function(e){
+            var node = cf_tree_addSysMenuNode(e);
+            if(node)initTpl({});
+            $.cf.controlButton({
+                arrayId:['saveSysMenu','resetSysMenu'],
+                method:'normal'
+            });
+        });
+
+        //刷新
+        $('#refreshSysMenuTree').bind("click", function(){
+            var zTree = $.fn.zTree.getZTreeObj("sysMenuTree");
+            zTree.reAsyncChildNodes(null, "refresh");
+            //zTree.cancelSelectedNode();
+        });
+
+
+        //构建菜单
+        $('#buildSysMenuTreePath').click(function(){
+            $.cf.req({
+                url:'/sysMenu/buildSysMenuTreePath',
+                success:function (res) {
+                    if("-1" == res.code){
+                        layer.msg(res.msg,{icon: 5});
+                    } else{
+                        layer.msg(res.msg,{icon: 6});
+                    }
+
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysRole">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="YN_MODIFY" jdbcType="VARCHAR" property="ynModify" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="CREATAE_DEPT" jdbcType="VARCHAR" property="creataeDept" />
+    <result column="UPDATE_DEPT" jdbcType="VARCHAR" property="updateDept" />
+    <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+    <result column="YN_ENABLE" jdbcType="VARCHAR" property="ynEnable" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, NAME, YN_MODIFY, CREATE_USER, CREATE_TIME, UPDATE_USER, UPDATE_TIME, CREATAE_DEPT, 
+    UPDATE_DEPT, DEL_FLAG, YN_ENABLE, ORG_ID, MEMO
+  </sql>
+  <!--查询所有角色-->
+  <select id="selectSysRoleList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from CF_BASE.SYS_ROLE WHERE DEL_FLAG='0' ORDER BY CREATE_TIME DESC
+  </select>
+    <!--查询角色对象-->
+  <select id="selectSysRole" parameterType="com.cf.core.base.mybatis.cf_base.SysRole" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CF_BASE.SYS_ROLE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+    <!--删除角色-->
+  <delete id="deleteSysRole" parameterType="com.cf.core.base.mybatis.cf_base.SysRole">
+    delete from CF_BASE.SYS_ROLE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <!--新建角色-->
+  <insert id="insertSysRole" parameterType="com.cf.core.base.mybatis.cf_base.SysRole">
+    insert into CF_BASE.SYS_ROLE (ID, NAME, YN_MODIFY, 
+      CREATE_USER, CREATE_TIME, CREATAE_DEPT,
+      DEL_FLAG, YN_ENABLE, ORG_ID, 
+      MEMO)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ynModify,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
+      #{creataeDept,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+      #{ynEnable,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR},
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysRole">
+    insert into CF_BASE.SYS_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="ynModify != null">
+        YN_MODIFY,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="creataeDept != null">
+        CREATAE_DEPT,
+      </if>
+      <if test="updateDept != null">
+        UPDATE_DEPT,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ynModify != null">
+        #{ynModify,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creataeDept != null">
+        #{creataeDept,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDept != null">
+        #{updateDept,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <!--修改角色-->
+  <update id="updateSysRole" parameterType="com.cf.core.base.mybatis.cf_base.SysRole">
+    update CF_BASE.SYS_ROLE
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ynModify != null">
+        YN_MODIFY = #{ynModify,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creataeDept != null">
+        CREATAE_DEPT = #{creataeDept,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDept != null">
+        UPDATE_DEPT = #{updateDept,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE = #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+ <!-- <update id="updateByPrimaryKey" parameterType="com.cf.core.base.mybatis.cf_base.SysRole">
+    update CF_BASE.SYS_ROLE
+    set NAME = #{name,jdbcType=VARCHAR},
+      YN_MODIFY = #{ynModify,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      CREATAE_DEPT = #{creataeDept,jdbcType=VARCHAR},
+      UPDATE_DEPT = #{updateDept,jdbcType=VARCHAR},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      YN_ENABLE = #{ynEnable,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>-->
+
+  <!--通过用户ID获取用户拥有的角色-->
+  <select id="selectUserRoleListByUserId" parameterType="com.cf.core.base.mybatis.cf_base.SysUser" resultMap="BaseResultMap">
+    select * from  CF_BASE.SYS_ROLE where del_flag=0 and yn_enable=1 and id in(
+      select role_Id from CF_BASE.SYS_ROLE_USER where user_Id=#{id,jdbcType=VARCHAR}
+    )
+  </select>
+</mapper>

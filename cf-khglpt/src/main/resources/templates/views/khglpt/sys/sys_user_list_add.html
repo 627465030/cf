@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+    <div class="layui-fluid cf-main">
+        <form id="addSysUserForm" class="layui-form" action="" >
+            <div class="layui-form-item">
+                <div class="layui-btn-group">
+                    <button class="layui-btn" lay-submit lay-filter="saveSysUser">保存</button>
+                    <button type="reset" class="layui-btn" >重置</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>登录账号</label>
+                    <div class="layui-input-inline">
+                        <input name="loginName" lay-verify="required" class="layui-input" type="text" />
+                        <input name="id" class="layui-input" type="text" style="display: none;" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>真实姓名</label>
+                    <div class="layui-input-inline">
+                        <input name="loginAlias" lay-verify="required" class="layui-input" type="text"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>用户类型</label>
+                    <div class="layui-input-inline">
+                        <select name="userType" lay-filter="sysUserAddUserType" lay-verify="required">
+                            <option value="">全部</option>
+                            <div th:each="item,iterStat : ${session.mode.sysDicCfgMap['100']}">
+                                <option th:value="${item.key}" th:text="${item.value}"></option>
+                            </div>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>出生日期</label>
+                    <div class="layui-input-inline">
+                        <input name="birthday" id="sysUserAddBirthday" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>性别</label>
+                    <div class="layui-input-inline" >
+                        <span th:each="item,iterStat : ${session.mode.sysDicCfgMap['2']}">
+                            <input name="sex" th:value="${item.key}" th:title="${item.value}" th:if="${item.key=='1'}" checked="" type="radio"/>
+                            <input name="sex" th:value="${item.key}" th:title="${item.value}" th:if="${item.key=='2'}" type="radio"/>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>所属单位</label>
+                    <input id="sysUserAddChoiceOrgId" name="orgId" type="hidden" lay-verify="required"/>
+                    <div class="layui-input-inline">
+                        <div id="sysUserAddChoiceOrg"></div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>监管单位</label>
+                    <input id="sysUserAddChoiceRegOrgId" name="regulatoryOrg" type="hidden" lay-verify="required"/>
+                    <div class="layui-input-inline">
+                        <div id="sysUserAddChoiceRegOrg"></div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>所属区域</label>
+                    <div class="layui-input-inline">
+                        <input name="areaId"  placeholder="选择地区" class="layui-input" type="text" readonly="readonly" value="江苏省徐州市"/>
+                        <input type="hidden" name="areaId" value="320300"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>身份证</label>
+                    <div class="layui-input-inline">
+                        <input name="idCard" class="layui-input" type="text" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>手机</label>
+                    <div class="layui-input-inline">
+                        <input name="mobileTel" class="layui-input" type="text" lay-verify="required">
+                        <!--lay-verify="required|phone"-->
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">座机</label>
+                    <div class="layui-input-inline">
+                        <input name="fixTel" class="layui-input" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">邮箱地址</label>
+                    <div class="layui-input-inline">
+                        <input name="email" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">绑定IP</label>
+                    <div class="layui-input-inline">
+                        <input name="bindIp" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">绑定MAC</label>
+                    <div class="layui-input-inline">
+                        <input name="bindMac" class="layui-input" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>是否启用</label>
+                    <div class="layui-input-inline">
+                        <span th:each="item,iterStat : ${session.mode.sysDicCfgMap['1']}">
+                            <input name="ynEnable" th:value="${item.key}" th:title="${item.value}" th:if="${item.key=='1'}" checked="" type="radio"/>
+                            <input name="ynEnable" th:value="${item.key}" th:title="${item.value}" th:if="${item.key=='0'}" type="radio"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"><span class="cf-Required-item">*</span>有效期</label>
+                    <div class="layui-input-inline">
+                        <input name="validity" id="sysUserAddValidity" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea name="memo" class="layui-textarea"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<script>
+    layui.use(['form','layer','layedit', 'laydate','laytpl'], function(){
+        var $ = layui.$
+            ,view = layui.view
+            ,form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,laytpl = layui.laytpl;
+
+        //日期
+        laydate.render({
+            elem: '#sysUserAddBirthday'
+        });
+        laydate.render({
+            elem: '#sysUserAddValidity'
+        });
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        form.render();
+
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 5){
+                    return '标题至少得5个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+        //表单提交
+        form.on('submit(saveSysUser)', function(data){
+            $.cf.req({
+                url:'/sysUser/addSysUser'
+                ,data: data.field
+                ,success:function(res){
+                    if('0'==res.code){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload('sysUserList');
+                        parent.layer.msg(res.msg,{icon: 6})
+                    }else{
+                        layer.msg(res.msg,{icon: 5});
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        /*$.cf.controlForm({
+            formId:'sysUserAddForm'
+        });
+        form.render();*/
+    });
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var sysUserAddOrgTree = /*[[${session.mode.orgJsonTree}]]*/ 'Sebastian';
+    var sysUserAddOrgJson = JSON.parse(sysUserAddOrgTree);
+    /*]]>*/
+</script>
+<script>
+    //加载结构树
+    layui.use(['cfTreeSelect','cfCustomTree'], function(){
+        var treeSelect = layui.cfTreeSelect({
+            elem: '#sysUserAddChoiceOrg',
+            cfCustomTree:layui.cfCustomTree,
+            placeholder: '请选择',
+            data: sysUserAddOrgJson,
+            treeField: { id: 'diccode', parentId: 'pid', name: 'dicitem', topId: '-1' },
+            onSelectChange: function (node) {
+                $("#sysUserAddChoiceOrgId").val(node.diccode||'');
+            }
+        });
+
+        var treeSelect1 = layui.cfTreeSelect({
+            elem: '#sysUserAddChoiceRegOrg',
+            cfCustomTree:layui.cfCustomTree,
+            placeholder: '请选择',
+            data: sysUserAddOrgJson,
+            treeField: { id: 'diccode', parentId: 'pid', name: 'dicitem', topId: '-1' },
+            onSelectChange: function (node) {
+                $("#sysUserAddChoiceRegOrgId").val(node.diccode||'');
+            }
+        });
+
+
+    });
+</script>
+</body>
+</html>

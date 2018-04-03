@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysRoleUserMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysRoleUser">
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <!--新增用户角色-->
+  <insert id="insertSysRoleUser" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleUser">
+    insert into CF_BASE.SYS_ROLE_USER (ROLE_ID, USER_ID)
+    values (#{roleId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+
+    <!--删除用户角色通过用户ID-->
+    <delete id="deleteSysRoleUserByUserId" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleUser">
+        delete from CF_BASE.SYS_ROLE_USER where USER_ID=#{userId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--删除用户角色通过角色ID-->
+    <delete id="deleteSysRoleUserByRoleId" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleUser">
+        delete from CF_BASE.SYS_ROLE_USER where ROLE_ID=#{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--查询用户角色关系 根据USERID  ROLEID-->
+    <select id="selectSysRoleUserList" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleUser" resultMap="BaseResultMap">
+      SELECT * FROM CF_BASE.SYS_ROLE_USER
+      WHERE 1=1
+        <if test="userId != null and userId != ''">
+            and USER_ID=#{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId != ''">
+            and ROLE_ID=#{roleId,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+</mapper>

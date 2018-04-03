@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+<div class="layui-fluid cf-main">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form id="searchSysDicBusinessForm" class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">机构编码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="diccode" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">机构名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dicitem" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-radius layui-btn-sm" lay-submit lay-filter="sysDicBusinesSearch"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+                </div>
+            </form>
+            <table class="layui-hide" id="sysSysDicBusinesList" lay-filter="sysDicBusinesListTable"></table>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table','form','layer'], function(){
+        var $ = layui.$
+            ,view = layui.view
+            ,layer = layui.layer
+            ,form = layui.form
+            ,router = layui.router()
+            ,table = layui.table
+            ,echarts = layui.treeSelect;
+
+        form.on('submit(sysDicBusinesSearch)', function(data){
+            table.reload('sysSysDicBusinesList', {
+                where:data.field
+            });
+            return false;
+        });
+
+        table.render({
+            elem: '#sysSysDicBusinesList'
+            ,url:'/sysOrg/searchSysDicBusinessList'
+            ,page:true
+            ,method: 'post'
+            ,limit:sys_page_size
+            ,where:$('#searchSysDicBusinessForm').serializeArray()
+            ,cols: [[
+                {type:'numbers'}
+                ,{field:'diccode', title: '机构编号', sort: true}
+                ,{field:'dicitem', title: '机构名称', sort: true}
+                ,{field:'pid',  title: '上级单位编号', sort: true}
+                ,{field:'pid', title: '上级单位名称',sort: true ,templet: '#sysOrgListPidName'}
+                ,{field:'dicspy', title: '拼音',sort: true }
+                ,{field:'MEMO', title: '备注'}
+            ]]
+
+        });
+
+        form.render();
+    });
+</script>
+<!--编码转换-->
+<script type="text/html" id="sysOrgListPidName">
+    {{ modeCache(2,d.pid,2) }}
+</script>
+</body>
+</html>

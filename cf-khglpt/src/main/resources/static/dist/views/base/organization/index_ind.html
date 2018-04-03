@@ -1,0 +1,132 @@
+<title>单位管理</title>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-row layui-col-space10 layui-form-item">
+                <div class="layui-btn-group">
+                    <button id="sysOrgDet" class="layui-btn ">浏览</button>
+                    <button id="sysOrgAdd" class="layui-btn ">新增</button>
+                    <button id="sysOrgMod" class="layui-btn ">修改</button>
+                    <button id="sysOrgDel" class="layui-btn layui-btn-disabled" disabled="disabled">删除</button>
+                </div>
+                <div class="layui-btn-group">
+                    <button id="sysOrgDepthSearch" class="layui-btn ">高级查询</button>
+                    <button id="sysOrgMoreFun" class="layui-btn ">更多操作</button>
+                </div>
+            </div>
+            <form class="layui-form" action="" lay-filter="sysOrgSearch">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">登录名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否启用</label>
+                        <div class="layui-input-inline">
+                            <select name="s" lay-verify="">
+                                <option value="">全部</option>
+                                <option value="010">是</option>
+                                <option value="021">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所在单位</label>
+                        <div class="layui-input-inline">
+                            <input id="sysOrgChoiceOrg" type="text" name="email" placeholder="选择单位" lay-verify="email" autocomplete="off" class="layui-input"/>
+                        </div>
+                    </div>
+                    <!--<div class="layui-inline">
+                        <label class="layui-form-label">所在单位</label>
+                        <div class="layui-input-inline">&lt;!&ndash;layui-input-block &ndash;&gt;
+                            <input type="text" name="t1" id="treeselect1" required lay-verify="required" placeholder="请选择组织" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>-->
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal layui-btn-radius" lay-submit lay-filter="sysOrgSearch"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+                </div>
+            </form>
+            <table class="layui-hide" id="test1" style="margin-top: 0px;"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin','table','form','layer'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,layer = layui.layer
+            ,form = layui.form
+            ,router = layui.router()
+            ,table = layui.table;
+        form.render(null,'sysOrgSearch');
+        form.on('submit(sysOrgSearch)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+
+        $('#sysOrgAdd').click(function () {
+            layer.open({
+                id:'sysUserAddWin',
+                title:'新建用户',
+                maxmin: true,
+                area: ['800px', '600px'],
+                success:function(layero,index){
+                    layui.view(this.id).render('base/user/index');
+                }
+            });
+        });
+        //type: 1,
+        //content:'dis/views/base/user/index.html'
+
+        $('#sysOrgMoreFun').click(function () {
+            layer.tips('<span onclick="alert(1)">EXCEL导出</span>' +
+                '<br/><span onclick="alert(2)">打印</span>' +
+                '<br/><span onclick="alert(3)">批量</span>', this,{
+                tips: 3
+            });
+        });
+
+        $('#sysOrgChoiceOrg').click(function () {
+            layer.tips('<span onclick="alert(1)">EXCEL导出</span>' +
+                '<br/><span onclick="alert(2)">打印</span>' +
+                '<br/><span onclick="alert(3)">批量</span>', this,{
+                tips: 3
+            });
+        });
+
+        table.render({
+            elem: '#test1'
+            ,url:'/demo/aa'
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+
+            }
+            ,cols: [[
+                {field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'username', width:120, title: '登录名称'}
+                ,{field:'sex', width:150, title: '真实姓名', sort: true}
+                ,{field:'city', width:120, title: '性别'}
+                ,{field:'city', width:200, title: '所在单位'}
+                ,{field:'sign', width:120,title: '是否启用', }
+                ,{field:'experience', minWidth: 150, title: '操作', sort: true}
+            ]]
+
+        });
+
+    });
+</script>

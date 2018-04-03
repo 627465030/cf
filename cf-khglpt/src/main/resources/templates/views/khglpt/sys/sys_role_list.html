@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+<div class="layui-fluid cf-main">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">角色列表</div>
+                <div class="layui-card-body layui-row" >
+                    <div class="layui-btn-group">
+                        <button id="addSysRoleBtn" class="layui-btn "><i class="layui-icon"></i></button>
+                        <button id="modSysRoleBtn" class="layui-btn "><i class="layui-icon"></i></button>
+                        <button id="removeSysRoleBtn" class="layui-btn "><i class="layui-icon"></i></button>
+                    </div>
+                    <table class="layui-hide" id="sysRoleList" lay-filter="sysRoleListTable" ></table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">角色功能</li>
+                        <li>关联用户</li>
+                        <li>批量授权</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-row layui-col-space10 layui-form-item">
+                                <div class="layui-btn-group">
+                                    <button id="saveSysRoleMenuBtn" class="layui-btn ">保存</button>
+                                </div>
+                            </div>
+                            <ul id="sysRoleMenuTree" class="ztree"></ul>
+                        </div>
+                        <div class="layui-tab-item">稍后开放</div>
+                        <div class="layui-tab-item">稍后开放</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table'], function(){
+        var $ = layui.$
+            ,table = layui.table
+            ,form = layui.form;
+
+        $('#addSysRoleBtn').click(function () {
+            layer.open({
+                id:'addSysRoleWin',
+                title:'新建角色',
+                type:2,
+                offset: 'lt',
+                anim: 4,
+                content:'/sysRole/toSysRoleListAdd',
+                maxmin: true,
+                area: ['450px', '350px'],
+                success:function(layero,index){
+
+                }
+            });
+        });
+
+        $('#modSysRoleBtn').click(function () {
+            var checkStatus = table.checkStatus('sysRoleList')
+                ,data = checkStatus.data;
+
+            if(data.length!=1){
+                layer.msg('请选一条数据',{icon: 5});
+                return false;
+            }
+
+            layer.open({
+                id:'modSysRoleWin',
+                title:'修改角色',
+                type:2,
+                offset: 'lt',
+                anim: 4,
+                content:'/sysRole/toSysRoleListMod?id='+data[0].id,
+                maxmin:true,
+                area: ['450px', '350px'],
+                success:function(layero,index){
+
+                }
+            });
+
+        });
+
+        $('#removeSysRoleBtn').click(function () {
+            var checkStatus = table.checkStatus('sysRoleList')
+                ,data = checkStatus.data;
+
+            if(data.length!=1){
+                layer.msg('请选一条数据',{icon: 5});
+                return false;
+            }
+
+            $.cf.req({
+                url:'/sysRole/delSysRole',
+                data:{"id":data[0].id},
+                success:function (res) {
+                    if('0'==res.code){
+                        layer.msg(res.msg,{icon: 6});
+                        table.reload('sysRoleList');
+                    }else{
+                        layer.msg(res.msg,{icon: 5});
+                    }
+
+                }
+            });
+
+        });
+
+        //保存角色菜单关系
+        $('#saveSysRoleMenuBtn').click(function () {
+            var checkStatus = table.checkStatus('sysRoleList')
+                ,data = checkStatus.data;
+            if(data.length!=1){
+                layer.msg('请选择一个角色',{icon: 5});
+                return false;
+            }
+
+            var zTree = $.fn.zTree.getZTreeObj("sysRoleMenuTree");
+            var nodes = zTree.getCheckedNodes(true);
+            var ids = '';
+            if(nodes){
+                for(var i = 0;i<nodes.length;i++){
+                    ids += nodes[i].id+',';
+                }
+                ids = ids.substr(0,ids.length-1);
+            }
+            $.cf.req({
+                url:'/sysRole/saveSysRoleMenu',
+                data:{id:data[0].id,memo:ids},
+                success:function (res) {
+                    if('0'==res.code){
+                        layer.msg(res.msg,{icon: 6});
+                    }else{
+                        layer.msg(res.msg,{icon: 5});
+                    }
+                }
+
+            });
+
+        });
+
+        table.render({
+            elem: '#sysRoleList'
+            ,url:'/sysRole/searchSysRoleList'
+            ,method: 'post'
+            ,cols: [[
+                {type: 'checkbox'}
+                ,{field:'name',title:'角色名称'}
+            ]]
+        });
+
+
+        table.on('checkbox(sysRoleListTable)', function(obj){
+            if(obj.checked){
+                var zTree = $.fn.zTree.getZTreeObj("sysRoleMenuTree");
+                //清空选中
+                zTree.checkAllNodes(false);
+                //获取节点ID
+                $.cf.req({
+                    url:'/sysRole/getSysRoleMenuList',
+                    data:{id:obj.data.id},
+                    success:function (res) {
+                        //设置选中
+                        var data = res.data;
+                        if(data){
+                            for (var item in data) {
+                                //获取节点
+                                var node =  zTree.getNodeByParam("id", data[item].menuId, null);
+                                zTree.checkNode(node, true, true);
+                            }
+                        }
+                    }
+                });
+
+            }
+        });
+
+
+
+        var zTreeObj;
+        // zTree 的参数配置
+        var setting = {
+            check:{
+                enable: true,
+                chkStyle: "checkbox"
+            },
+            data: {
+                key: {
+                    name : 'name',
+                    title: ''
+                },
+                simpleData : {
+                    enable : true,
+                    idKey : 'id',
+                    pIdKey :'pId'
+                }
+            },
+            async:{
+                enable: true,
+                url:'/sysMenu/getSysMenuAll',
+                dataType:'json'
+            },
+            callback:{
+                onClick:function(event, treeId, treeNode){
+
+                },
+                onRemove:function (event, treeId, treeNode) {
+
+                },
+                onAsyncSuccess:function (event, treeId, treeNode, msg) {
+                    var zTree = $.fn.zTree.getZTreeObj(treeId);
+                    zTree.expandAll(true);
+                }
+            }
+        };
+
+        var zNodes = [];
+        $(document).ready(function(){
+            zTreeObj = $.fn.zTree.init($("#sysRoleMenuTree"), setting, zNodes);
+        });
+    });
+</script>
+
+</body>
+</html>

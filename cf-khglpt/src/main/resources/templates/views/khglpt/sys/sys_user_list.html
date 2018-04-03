@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header/main_head :: mainHead">
+<body>
+<div class="layui-fluid cf-main">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-row layui-col-space10 layui-form-item">
+                <div class="layui-btn-group">
+                    <button id="detSysUser" class="layui-btn ">浏览</button>
+                    <button id="addSysUser" class="layui-btn ">新增</button>
+                    <button id="modSysUser" class="layui-btn ">修改</button>
+                    <button id="delSysUser" class="layui-btn ">删除</button>
+                </div>
+            </div>
+            <form id="searchSysUserForm" class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">登录名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="loginName" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">真实姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="loginAlias" class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-inline">
+                            <select name="sex" lay-verify="" >
+                                <option value="">全部</option>
+                                <div th:each="item,iterStat : ${session.mode.sysDicCfgMap['2']}">
+                                    <option th:value="${item.key}" th:text="${item.value}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否启用</label>
+                        <div class="layui-input-inline">
+                            <select name="ynEnable" lay-verify="" >
+                                <option value="">全部</option>
+                                <div th:each="item,iterStat : ${session.mode.sysDicCfgMap['1']}">
+                                    <option th:value="${item.key}" th:text="${item.value}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所在单位</label>
+                        <input id="sysUserChoiceOrgId" name="orgId" type="hidden"/>
+                        <div class="layui-input-inline">
+                            <div id="sysUserChoiceOrg"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-radius layui-btn-sm" lay-submit lay-filter="sysUserSearch"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+                </div>
+            </form>
+            <table class="layui-hide" id="sysUserList" lay-filter="sysUserListTable"></table>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="sysUserListBar">
+    <a class="layui-btn layui-btn-xs" lay-event="modSysUserRole">设置角色</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="modSysUserPasswrodReset">密码重置</a>
+    <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">密码重置</a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"></a>-->
+</script>
+<script>
+    layui.use(['table','form','layer'], function(){
+        var $ = layui.$
+            ,view = layui.view
+            ,layer = layui.layer
+            ,form = layui.form
+            ,router = layui.router()
+            ,table = layui.table
+            ,echarts = layui.treeSelect;
+
+        form.on('submit(sysUserSearch)', function(data){
+            table.reload('sysUserList', {
+                where:data.field
+            });
+            return false;
+        });
+
+        $('#addSysUser').click(function () {
+            layer.open({
+                id:'addSysUserWin',
+                title:'新建用户',
+                type:2,
+                content:'/sysUser/toSysUserListAdd',
+                maxmin: true,
+                area: ['1024px', '670px'],
+                success:function(layero,index){
+
+                }
+            });
+        });
+
+        $('#delSysUser').click(function () {
+            var checkStatus = table.checkStatus('sysUserList')
+                ,data = checkStatus.data;
+            if(data.length!=1){
+                layer.msg('请选一条数据',{icon: 5});
+                return false;
+            }
+
+            $.cf.req({
+                url:'/sysUser/delSysUser',
+                data:{"id":data[0].id},
+                success:function (res) {
+                    if('0'==res.code){
+                        layer.msg(res.msg,{icon: 6});
+                        table.reload('sysUserList', {
+                            where:data.field
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon: 5});
+                    }
+
+                }
+            });
+        });
+
+        $('#modSysUser').click(function () {
+            var checkStatus = table.checkStatus('sysUserList')
+                ,data = checkStatus.data;
+            if(data.length!=1){
+                layer.msg('请选一条数据',{icon: 5});
+                return false;
+            }
+
+            layer.open({
+                id:'modSysUserWin',
+                title:'修改用户',
+                type:2,
+                content:'/sysUser/toSysUserListMod?id='+data[0].id,
+                maxmin:true,
+                area: ['1024px', '670px'],
+                success:function(layero,index){
+
+                }
+            });
+        });
+
+
+        $('#detSysUser').click(function () {
+            var checkStatus = table.checkStatus('sysUserList')
+                ,data = checkStatus.data;
+            if(data.length!=1){
+                layer.msg('请选一条数据',{icon: 5});
+                return false;
+            }
+
+            layer.open({
+                id:'detSysUserWin',
+                title:'用户详情',
+                type:2,
+                content:'/sysUser/toSysUserListDet?id='+data[0].id,
+                maxmin: true,
+                area: ['1024px', '670px'],
+                success:function(layero,index){
+
+                }
+            });
+
+        });
+
+       /* $('#sysUserChoiceOrg').click(function () {
+            layer.open({
+                id:'sysUserChoiceOrgWin',
+                title:'选择单位',
+                content:'/common/toChoiceOrg',
+                type:2,
+                maxmin: true,
+                area: ['350px', '300px'],
+                btn: ['选择', '清空','关闭'],
+                btnAlign:'c',
+                btn1: function(index, layero){
+                    var body = layer.getChildFrame('body', index);
+                    var id = body.find('#id').val();
+                    var name = body.find('#name').val();
+                    if(!id && !name){
+                        layer.msg("选择单位");
+                        return false;
+                    }
+                    $("#sysUserChoiceOrgId").val(id);
+                    $("#sysUserChoiceOrg").val(name);
+                    layer.close(index);
+
+                },
+                btn2: function(index, layero){
+                    $("#sysUserChoiceOrgId").val('');
+                    $("#sysUserChoiceOrg").val('');
+                },
+                btn3: function(index, layero){
+
+                },
+                success:function(layero,index){
+
+                }
+            });
+        });*/
+
+        var sysUserTable = table.render({
+            elem: '#sysUserList'
+            ,url:'/sysUser/searchSysUserList'
+            ,page:true
+            ,method: 'post'
+            ,limit:sys_page_size
+            ,where:$('#searchSysUserForm').serializeArray()
+            ,cols: [[
+                {type: 'checkbox'}
+                ,{field:'loginName', width:120, title: '登录名称', sort: true}
+                ,{field:'loginAlias', width:150, title: '真实姓名', sort: true}
+                ,{field:'sex', width:120, title: '性别', sort: true}
+                ,{field:'orgId', width:200, title: '所在单位',templet:'#sysUserListPidName'}
+                ,{field:'ynEnable', width:120,title: '是否启用', sort: true }
+                ,{field:'experience', minWidth: 150, title: '操作', toolbar: '#sysUserListBar'}
+            ]]
+            ,done: function(res, curr, count){
+                //t_sys_userData=res.data; //获得请求数据
+                //t_sys_userInitCellClick(); // 初始化点击事件
+            }
+
+        });
+
+        //var t_sys_userData=[];
+        table.on('tool(sysUserListTable)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'modSysUserRole'){
+                layer.open({
+                    id:'sysUserSetRoleWin',
+                    title:'设置角色',
+                    type:2,
+                    offset: 't',
+                    anim: 4,
+                    content:'/sysUser/toSysUserSetRole?id='+data.id,
+                    maxmin: true,
+                    area: ['300px', '600px'],
+                    success:function(layero,index){
+                        var body = layer.getChildFrame('body', index);
+                        var id = body.find('#sysUserId').val(data.id);
+                        //设置用户data.id
+                    }
+                });
+            } else if(layEvent === 'modSysUserPasswrodReset'){
+                $.cf.req({
+                    url:'/sysUser/modSysUserPasswordReset',
+                    data:{"id":data.id},
+                    success:function (res) {
+                        if('0'==res.code){
+                            layer.msg(res.msg,{icon: 6});
+                        }else{
+                            layer.msg(res.msg,{icon: 5});
+                        }
+                    }
+                });
+            }
+        });
+
+        /*$.cf.controlButton({
+            arrayId:['sysUserDet','sysUserDel','sysUserMod'],
+            method:_button_method
+        });*/
+
+        form.render();
+        //alert(table.cache['sysUserList']);
+
+        //$.cf.checkBoxSingle({id:'searchSysUserForm'});
+
+    });
+</script>
+<!--编码转换-->
+<script type="text/html" id="sysUserListPidName">
+    {{ modeCache(2,d.orgId,2) }}
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var sysUserOrgTree = /*[[${session.mode.orgJsonTree}]]*/ 'Sebastian';
+    /*]]>*/
+</script>
+<script>
+    //加载结构树
+    layui.use(['cfCustomTree','cfTreeSelect'], function(){
+        var treeSelect = layui.cfTreeSelect({
+            elem: '#sysUserChoiceOrg',
+            placeholder: '请选择',
+            data: JSON.parse(sysUserOrgTree),
+            treeField: { id: 'diccode', parentId: 'pid', name: 'dicitem', topId: '-1' },
+            onSelectChange: function (node) {
+                $("#sysUserChoiceOrgId").val(node.diccode||'');
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysRoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysRoleMenu">
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+  </resultMap>
+
+  <!--新建角色菜单关系-->
+  <insert id="insertSysRoleMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleMenu">
+    insert into CF_BASE.SYS_ROLE_MENU (ROLE_ID, MENU_ID)
+    values (#{roleId,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR})
+  </insert>
+  <!--删除角色菜单关系-->
+  <delete id="deleteSysRoleMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleMenu">
+    delete from CF_BASE.SYS_ROLE_MENU
+    where 1=1
+      <if test="roleId != null and roleId != ''">
+          and ROLE_ID=#{roleId,jdbcType=VARCHAR}
+      </if>
+      <if test="menuId != null and menuId != ''">
+          and MENU_ID=#{menuId,jdbcType=VARCHAR}
+      </if>
+  </delete>
+
+  <!--获取角色对应的菜单-->
+  <select id="selectSysRoleMenuList" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleMenu" resultMap="BaseResultMap">
+      SELECT * FROM  CF_BASE.SYS_ROLE_MENU WHERE ROLE_ID=#{roleId,jdbcType=VARCHAR}
+  </select>
+
+
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysRoleMenu">
+    insert into CF_BASE.SYS_ROLE_MENU
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="menuId != null">
+        MENU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

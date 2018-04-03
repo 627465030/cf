@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysMenu">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+    <result column="PID" jdbcType="VARCHAR" property="pid" />
+    <result column="MENU_URL" jdbcType="VARCHAR" property="menuUrl" />
+    <result column="MENU_TYPE" jdbcType="VARCHAR" property="menuType" />
+    <result column="MENU_FUN" jdbcType="VARCHAR" property="menuFun" />
+    <result column="DEV_MODE" jdbcType="VARCHAR" property="devMode" />
+    <result column="MENU_LEV" jdbcType="VARCHAR" property="menuLev" />
+    <result column="SORT_ID" jdbcType="VARCHAR" property="sortId" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="CREATAE_DEPT" jdbcType="VARCHAR" property="creataeDept" />
+    <result column="UPDATE_DEPT" jdbcType="VARCHAR" property="updateDept" />
+    <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+    <result column="YN_ENABLE" jdbcType="VARCHAR" property="ynEnable" />
+    <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+<!--获取所有已经启用菜单-->
+  <select id="selectSysMenuAll" resultMap="BaseResultMap">
+    SELECT * FROM CF_BASE.SYS_MENU
+    WHERE DEL_FLAG='0' order by MENU_LEV,SORT_ID
+  </select>
+  <!--通过ID获取菜单对象-->
+  <select id="selectSysMenuById" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu" resultMap="BaseResultMap">
+    SELECT * FROM CF_BASE.SYS_MENU
+    WHERE ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <!--保存菜单-->
+  <insert id="insertSysMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+    insert into CF_BASE.SYS_MENU (ID, MENU_NAME, PID, 
+      MENU_URL, MENU_TYPE, MENU_FUN, 
+      DEV_MODE, MENU_LEV, SORT_ID, 
+      ICON, CREATE_USER, CREATE_TIME, 
+      CREATAE_DEPT,YN_ENABLE,
+      GROUP_ID, MEMO)
+    values (#{id,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{menuType,jdbcType=VARCHAR}, #{menuFun,jdbcType=VARCHAR}, 
+      #{devMode,jdbcType=VARCHAR}, #{menuLev,jdbcType=VARCHAR}, #{sortId,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+       #{creataeDept,jdbcType=VARCHAR}, #{ynEnable,jdbcType=VARCHAR},
+      #{groupId,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+  </insert>
+    <!--修改菜单-->
+    <update id="updateSysMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+        update CF_BASE.SYS_MENU
+        set MENU_NAME = #{menuName,jdbcType=VARCHAR},
+        PID = #{pid,jdbcType=VARCHAR},
+        MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+        MENU_TYPE = #{menuType,jdbcType=VARCHAR},
+        MENU_FUN = #{menuFun,jdbcType=VARCHAR},
+        DEV_MODE = #{devMode,jdbcType=VARCHAR},
+        MENU_LEV = #{menuLev,jdbcType=VARCHAR},
+        SORT_ID = #{sortId,jdbcType=VARCHAR},
+        ICON = #{icon,jdbcType=VARCHAR},
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+        UPDATE_DEPT = #{updateDept,jdbcType=VARCHAR},
+        YN_ENABLE = #{ynEnable,jdbcType=VARCHAR},
+        GROUP_ID = #{groupId,jdbcType=VARCHAR},
+        MEMO = #{memo,jdbcType=VARCHAR}
+      WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <!--删除菜单-->
+    <!--<delete id="deleteSysMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+        delete from CF_BASE.SYS_MENU WHERE ID = #{id,jdbcType=VARCHAR}
+    </delete>-->
+    <update id="deleteSysMenu" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+        update CF_BASE.SYS_MENU set DEL_FLAG='1' where ID = #{id,jdbcType=VARCHAR}
+    </update>
+<!--更新排序状态-->
+  <update id="updateSysMenuSort" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+        UPDATE  CF_BASE.SYS_MENU set SORT_ID=#{sortId,jdbcType=VARCHAR},PID=#{pid,jdbcType=VARCHAR},MENU_LEV = #{menuLev,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysMenu">
+    insert into CF_BASE.SYS_MENU
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="menuName != null">
+        MENU_NAME,
+      </if>
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="menuUrl != null">
+        MENU_URL,
+      </if>
+      <if test="menuType != null">
+        MENU_TYPE,
+      </if>
+      <if test="menuFun != null">
+        MENU_FUN,
+      </if>
+      <if test="devMode != null">
+        DEV_MODE,
+      </if>
+      <if test="menuLev != null">
+        MENU_LEV,
+      </if>
+      <if test="sortId != null">
+        SORT_ID,
+      </if>
+      <if test="icon != null">
+        ICON,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="creataeDept != null">
+        CREATAE_DEPT,
+      </if>
+      <if test="updateDept != null">
+        UPDATE_DEPT,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE,
+      </if>
+      <if test="groupId != null">
+        GROUP_ID,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="menuFun != null">
+        #{menuFun,jdbcType=VARCHAR},
+      </if>
+      <if test="devMode != null">
+        #{devMode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLev != null">
+        #{menuLev,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null">
+        #{sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creataeDept != null">
+        #{creataeDept,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDept != null">
+        #{updateDept,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+    <!--多角色合并获取功能菜单-->
+  <select id="selectRoleMenuListByRoleId" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
+      select * from  CF_BASE.SYS_MENU where del_flag=0 and yn_enable=1 and id in(
+           select distinct(menu_id)
+           from CF_BASE.SYS_ROLE_MENU
+           where role_id in
+          <foreach item="item" index="index" collection="list" open="("
+               separator="," close=")">
+              #{item.id}
+          </foreach>
+        ) order by menu_lev,sort_id
+  </select>
+</mapper>

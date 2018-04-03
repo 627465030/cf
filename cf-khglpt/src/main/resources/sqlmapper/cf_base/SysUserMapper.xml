@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysUser">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+    <result column="LOGIN_ALIAS" jdbcType="VARCHAR" property="loginAlias" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="USER_TYPE" jdbcType="VARCHAR" property="userType" />
+    <result column="BIND_IP" jdbcType="VARCHAR" property="bindIp" />
+    <result column="BIND_MAC" jdbcType="VARCHAR" property="bindMac" />
+    <result column="BINDE_MEID" jdbcType="VARCHAR" property="bindeMeid" />
+    <result column="VALIDITY" jdbcType="VARCHAR" property="validity" />
+    <result column="MOBILE_TEL" jdbcType="VARCHAR" property="mobileTel" />
+    <result column="FIX_TEL" jdbcType="VARCHAR" property="fixTel" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="REGULATORY_ORG" jdbcType="VARCHAR" property="regulatoryOrg" />
+    <result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
+    <result column="HEADER" jdbcType="VARCHAR" property="header" />
+    <result column="YN_MODIFY" jdbcType="VARCHAR" property="ynModify" />
+    <result column="BIRTHDAY" jdbcType="VARCHAR" property="birthday" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="YN_ASITANT" jdbcType="VARCHAR" property="ynAsitant" />
+    <result column="ASITANT_ID" jdbcType="VARCHAR" property="asitantId" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="CREATAE_DEPT" jdbcType="VARCHAR" property="creataeDept" />
+    <result column="UPDATE_DEPT" jdbcType="VARCHAR" property="updateDept" />
+    <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+    <result column="YN_ENABLE" jdbcType="VARCHAR" property="ynEnable" />
+    <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+
+    <!--查询用户列表-->
+  <select id="selectSysUserList" parameterType="com.cf.core.base.mybatis.cf_base.SysUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from CF_BASE.SYS_USER
+    where DEL_FLAG='0' and id!='1' and REGULATORY_ORG like '${regulatoryOrg}%'
+      <if test="loginName != null and loginName!=''">
+          and LOGIN_NAME like '%${loginName}%'
+      </if>
+      <if test="loginAlias != null and loginAlias!=''">
+          and LOGIN_ALIAS like '%${loginAlias}%'
+      </if>
+      <if test="sex != null and sex!=''">
+        and SEX = #{sex}
+      </if>
+      <if test="orgId != null and orgId!=''">
+        and ORG_ID = #{orgId}
+      </if>
+      <if test="ynEnable != null and ynEnable!=''">
+        and YN_ENABLE like '%${ynEnable}%'
+      </if>
+  </select>
+
+  <sql id="Base_Column_List">
+    ID, LOGIN_NAME, LOGIN_ALIAS, PASSWORD, USER_TYPE, BIND_IP, BIND_MAC, BINDE_MEID, 
+    VALIDITY, MOBILE_TEL, FIX_TEL, ORG_ID, REGULATORY_ORG, AREA_ID, ID_CARD, HEADER, 
+    YN_MODIFY, BIRTHDAY, SEX, EMAIL, YN_ASITANT, ASITANT_ID, CREATE_USER, CREATE_TIME, 
+    UPDATE_USER, UPDATE_TIME, CREATAE_DEPT, UPDATE_DEPT, DEL_FLAG, YN_ENABLE, GROUP_ID, 
+    MEMO
+  </sql>
+
+    <!--查询用户对象通过用户ID loginName-->
+  <select id="selectSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CF_BASE.SYS_USER
+    where 1=1
+    <if test="id != null and id != ''">
+      and ID = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="loginName != null and loginName != ''">
+      and LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+    </if>
+    <if test="idCard != null and idCard != ''">
+      and ID_CARD = #{idCard,jdbcType=VARCHAR}
+    </if>
+  </select>
+<!--删除用户-->
+  <!--<delete id="deleteSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+    delete from CF_BASE.SYS_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>-->
+    <update id="deleteSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+        update CF_BASE.SYS_USER set DEL_FLAG='1' where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <!--新建用户信息-->
+  <insert id="insertSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+    insert into CF_BASE.SYS_USER (ID, LOGIN_NAME, LOGIN_ALIAS, 
+      PASSWORD, USER_TYPE, BIND_IP, 
+      BIND_MAC, BINDE_MEID, VALIDITY, 
+      MOBILE_TEL, FIX_TEL, ORG_ID, 
+      REGULATORY_ORG, AREA_ID, ID_CARD, 
+      HEADER, YN_MODIFY, BIRTHDAY, 
+      SEX, EMAIL, YN_ASITANT, 
+      ASITANT_ID, CREATE_USER, CREATE_TIME, 
+      UPDATE_USER, UPDATE_TIME, CREATAE_DEPT, 
+      UPDATE_DEPT, DEL_FLAG, YN_ENABLE,
+      GROUP_ID, MEMO)
+    values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{loginAlias,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{bindIp,jdbcType=VARCHAR}, 
+      #{bindMac,jdbcType=VARCHAR}, #{bindeMeid,jdbcType=VARCHAR}, #{validity,jdbcType=VARCHAR}, 
+      #{mobileTel,jdbcType=VARCHAR}, #{fixTel,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, 
+      #{regulatoryOrg,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{header,jdbcType=VARCHAR}, #{ynModify,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{ynAsitant,jdbcType=VARCHAR}, 
+      #{asitantId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{creataeDept,jdbcType=VARCHAR}, 
+      #{updateDept,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{ynEnable,jdbcType=VARCHAR}, 
+      #{groupId,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+  </insert>
+
+  <!--修改用户-->
+  <update id="updateSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+    update CF_BASE.SYS_USER
+    <set>
+      <if test="loginName != null">
+        LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAlias != null">
+        LOGIN_ALIAS = #{loginAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        USER_TYPE = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="bindIp != null">
+        BIND_IP = #{bindIp,jdbcType=VARCHAR},
+      </if>
+      <if test="bindMac != null">
+        BIND_MAC = #{bindMac,jdbcType=VARCHAR},
+      </if>
+      <if test="bindeMeid != null">
+        BINDE_MEID = #{bindeMeid,jdbcType=VARCHAR},
+      </if>
+      <if test="validity != null">
+        VALIDITY = #{validity,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileTel != null">
+        MOBILE_TEL = #{mobileTel,jdbcType=VARCHAR},
+      </if>
+      <if test="fixTel != null">
+        FIX_TEL = #{fixTel,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="regulatoryOrg != null">
+        REGULATORY_ORG = #{regulatoryOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        AREA_ID = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="header != null">
+        HEADER = #{header,jdbcType=VARCHAR},
+      </if>
+      <if test="ynModify != null">
+        YN_MODIFY = #{ynModify,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="ynAsitant != null">
+        YN_ASITANT = #{ynAsitant,jdbcType=VARCHAR},
+      </if>
+      <if test="asitantId != null">
+        ASITANT_ID = #{asitantId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDept != null">
+        UPDATE_DEPT = #{updateDept,jdbcType=VARCHAR},
+      </if>
+      <if test="ynEnable != null">
+        YN_ENABLE = #{ynEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--重置密码-->
+    <update id="updateSysUserPasswordReset" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+        update CF_BASE.SYS_USER set PASSWORD=#{password,jdbcType=VARCHAR} where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+  <!-- <update id="updateSysUser" parameterType="com.cf.core.base.mybatis.cf_base.SysUser">
+    update CF_BASE.SYS_USER
+    set LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      LOGIN_ALIAS = #{loginAlias,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      USER_TYPE = #{userType,jdbcType=VARCHAR},
+      BIND_IP = #{bindIp,jdbcType=VARCHAR},
+      BIND_MAC = #{bindMac,jdbcType=VARCHAR},
+      BINDE_MEID = #{bindeMeid,jdbcType=VARCHAR},
+      VALIDITY = #{validity,jdbcType=VARCHAR},
+      MOBILE_TEL = #{mobileTel,jdbcType=VARCHAR},
+      FIX_TEL = #{fixTel,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      REGULATORY_ORG = #{regulatoryOrg,jdbcType=VARCHAR},
+      AREA_ID = #{areaId,jdbcType=VARCHAR},
+      ID_CARD = #{idCard,jdbcType=VARCHAR},
+      HEADER = #{header,jdbcType=VARCHAR},
+      YN_MODIFY = #{ynModify,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      YN_ASITANT = #{ynAsitant,jdbcType=VARCHAR},
+      ASITANT_ID = #{asitantId,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      CREATAE_DEPT = #{creataeDept,jdbcType=VARCHAR},
+      UPDATE_DEPT = #{updateDept,jdbcType=VARCHAR},
+      DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+      YN_ENABLE = #{ynEnable,jdbcType=VARCHAR},
+      GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>-->
+</mapper>

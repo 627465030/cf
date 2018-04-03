@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cf.core.base.mybatis.cf_base.SysLogMapper">
+  <resultMap id="BaseResultMap" type="com.cf.core.base.mybatis.cf_base.SysLog">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="HOSTNAME" jdbcType="VARCHAR" property="hostname" />
+    <result column="LOG_TIME" jdbcType="VARCHAR" property="logTime" />
+    <result column="VISIT_IP" jdbcType="VARCHAR" property="visitIp" />
+    <result column="VISIT_MAC" jdbcType="VARCHAR" property="visitMac" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="LOGIN_TYPE" jdbcType="VARCHAR" property="loginType" />
+    <result column="OPT_TYPE" jdbcType="VARCHAR" property="optType" />
+    <result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+    <result column="OPT_TABLE" jdbcType="VARCHAR" property="optTable" />
+    <result column="OPT_CONTENT" jdbcType="VARCHAR" property="optContent" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_NAME, HOSTNAME, LOG_TIME, VISIT_IP, VISIT_MAC, TYPE, LOGIN_TYPE, OPT_TYPE, 
+    LOGIN_NAME, OPT_TABLE, OPT_CONTENT, MEMO
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CF_BASE.SYS_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CF_BASE.SYS_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cf.core.base.mybatis.cf_base.SysLog">
+    insert into CF_BASE.SYS_LOG (ID, USER_NAME, HOSTNAME, 
+      LOG_TIME, VISIT_IP, VISIT_MAC, 
+      TYPE, LOGIN_TYPE, OPT_TYPE, 
+      LOGIN_NAME, OPT_TABLE, OPT_CONTENT, 
+      MEMO)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{hostname,jdbcType=VARCHAR}, 
+      #{logTime,jdbcType=VARCHAR}, #{visitIp,jdbcType=VARCHAR}, #{visitMac,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{loginType,jdbcType=VARCHAR}, #{optType,jdbcType=VARCHAR}, 
+      #{loginName,jdbcType=VARCHAR}, #{optTable,jdbcType=VARCHAR}, #{optContent,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cf.core.base.mybatis.cf_base.SysLog">
+    insert into CF_BASE.SYS_LOG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="hostname != null">
+        HOSTNAME,
+      </if>
+      <if test="logTime != null">
+        LOG_TIME,
+      </if>
+      <if test="visitIp != null">
+        VISIT_IP,
+      </if>
+      <if test="visitMac != null">
+        VISIT_MAC,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="loginType != null">
+        LOGIN_TYPE,
+      </if>
+      <if test="optType != null">
+        OPT_TYPE,
+      </if>
+      <if test="loginName != null">
+        LOGIN_NAME,
+      </if>
+      <if test="optTable != null">
+        OPT_TABLE,
+      </if>
+      <if test="optContent != null">
+        OPT_CONTENT,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null">
+        #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        #{logTime,jdbcType=VARCHAR},
+      </if>
+      <if test="visitIp != null">
+        #{visitIp,jdbcType=VARCHAR},
+      </if>
+      <if test="visitMac != null">
+        #{visitMac,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="loginType != null">
+        #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null">
+        #{optType,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="optTable != null">
+        #{optTable,jdbcType=VARCHAR},
+      </if>
+      <if test="optContent != null">
+        #{optContent,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cf.core.base.mybatis.cf_base.SysLog">
+    update CF_BASE.SYS_LOG
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null">
+        HOSTNAME = #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="logTime != null">
+        LOG_TIME = #{logTime,jdbcType=VARCHAR},
+      </if>
+      <if test="visitIp != null">
+        VISIT_IP = #{visitIp,jdbcType=VARCHAR},
+      </if>
+      <if test="visitMac != null">
+        VISIT_MAC = #{visitMac,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="loginType != null">
+        LOGIN_TYPE = #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null">
+        OPT_TYPE = #{optType,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null">
+        LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="optTable != null">
+        OPT_TABLE = #{optTable,jdbcType=VARCHAR},
+      </if>
+      <if test="optContent != null">
+        OPT_CONTENT = #{optContent,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cf.core.base.mybatis.cf_base.SysLog">
+    update CF_BASE.SYS_LOG
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      HOSTNAME = #{hostname,jdbcType=VARCHAR},
+      LOG_TIME = #{logTime,jdbcType=VARCHAR},
+      VISIT_IP = #{visitIp,jdbcType=VARCHAR},
+      VISIT_MAC = #{visitMac,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      LOGIN_TYPE = #{loginType,jdbcType=VARCHAR},
+      OPT_TYPE = #{optType,jdbcType=VARCHAR},
+      LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+      OPT_TABLE = #{optTable,jdbcType=VARCHAR},
+      OPT_CONTENT = #{optContent,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
