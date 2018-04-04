@@ -1,0 +1,9 @@
+/* CSS Document */
+*{margin:0;padding:0;font-size:14px;}
+a{color:#666; text-decoration:none;}
+
+.list_lh{overflow:hidden;}
+/*.list_lh li{ padding:10px;}*/
+.list_lh li p{ height:30px; line-height:30px;}
+.list_lh li p a{ float:left;}
+
